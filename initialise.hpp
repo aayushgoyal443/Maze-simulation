@@ -9,10 +9,10 @@
 using namespace std;
 
 
-const int SCREEN_WIDTH = 1000;  //696
-const int SCREEN_HEIGHT = 1200;
-const int cellHeight =24;
-const int cellWidth = 24;
+const int SCREEN_WIDTH = 1440;  //696
+const int SCREEN_HEIGHT = 1440;
+const int cellHeight =16;
+const int cellWidth = 16;
 
 
 //Starts up SDL and creates window
@@ -38,11 +38,16 @@ SDL_Renderer *simulationRenderer = NULL;
 SDL_Texture* gWallTexture = NULL;
 SDL_Texture* gGrassTexture = NULL;
 SDL_Texture* gDocmanTexture = NULL;
+SDL_Texture* one = NULL;
+SDL_Texture* two = NULL;
+SDL_Texture* three = NULL;
+SDL_Texture* four = NULL;
+SDL_Texture* five = NULL;
 
 
 pair<int,int> check_position(int x, int y)
 {
-    return {x/cellWidth , y/cellHeight};
+    return {y/cellHeight , x/cellWidth };
 }
 
 bool init()
@@ -123,6 +128,12 @@ bool loadMedia()
         printf("Failed to load Docman image!\n");
         success = false;
     }
+
+    one  = loadTexture("Resources/1.png");
+    two = loadTexture("Resources/2.png");
+    three = loadTexture("Resources/3.png");
+    four = loadTexture("Resources/4.png");
+    five = loadTexture("Resources/5.png");
     return success;
 }
 

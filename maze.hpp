@@ -4,14 +4,14 @@
 
 using namespace std;
 
-const int height = 29;
-const int width = 29;
+const int height = 51;
+const int width = 51;
 
 
 int maze[height][width]={};  //1 for wall, 0 for empty, 2 for egg, 3 for vaccine
 int visit[height][width]={};
 
-
+vector<int> traffic = {11,12,13,14,15};
 int nr=0,nc=0;
 
 bool rand_unvisited_neighbour(int r,int c){
@@ -147,12 +147,24 @@ void clearMaze(){
     }
 }
 
+void getTraffic(){
+    for(int i = 0;i<height; i++){
+        for(int j = 0; j<width; j++){
+            if(maze[i][j] == 0){
+                int random = rand()%(traffic.size()); 
+                maze[i][j] = traffic[random];
+            }
+        }
+    }
+}
+
 void formMaze(){
-     
+
     srand(time(0));
     clearMaze();
     initMaze();
     dfsMaze(1,1);
     breakSomeWalls();
+    getTraffic();
 
 }
