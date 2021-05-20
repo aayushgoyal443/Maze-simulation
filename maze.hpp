@@ -22,7 +22,7 @@ const int height = 51;
 const int width = 51;
 
 
-int maze[height][width]={};  //1 for wall, 0 for empty, 2 for egg, 3 for vaccine
+int maze[height][width]={};  //1 for wall
 int visit[height][width]={};
 
 vector<int> traffic = {11,12,13,14,15};
@@ -200,26 +200,20 @@ void updateScreen(){
             else if(maze[i][j] == 2){
                 SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
             }
-            else if(maze[i][j] == 11){
-                SDL_RenderCopy(simulationRenderer, one, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 12){
-                SDL_RenderCopy(simulationRenderer, two, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 13){
-                SDL_RenderCopy(simulationRenderer, three, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 14){
-                SDL_RenderCopy(simulationRenderer, four, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 15){
-                SDL_RenderCopy(simulationRenderer, five, NULL, &fillRect);
+            else if (maze[i][j]>10 && maze[i][j]<16){
+                SDL_RenderCopy(simulationRenderer, white[maze[i][j]-10], NULL, &fillRect);
             }
             else{
                 SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
             }
 		}
 	}
+    for (auto u: delivery_points){
+        SDL_Rect fillRect = { u.second*cellWidth, u.first*cellHeight, cellWidth, cellHeight };
+        SDL_RenderCopy(simulationRenderer, red[maze[u.first][u.second]-10] , NULL, &fillRect);
+    }
+    SDL_Rect fillRect = { home.second*cellWidth, home.first*cellHeight, cellWidth, cellHeight };
+    SDL_RenderCopy(simulationRenderer, gPizzamanTexture, NULL, &fillRect);
 }
 
 void createPath(int i, int j){
@@ -230,25 +224,40 @@ void createPath(int i, int j){
     else if(maze[i][j] == 2){
         SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
     }
-    else if(maze[i][j] == 11){
-        SDL_RenderCopy(simulationRenderer, one, NULL, &fillRect);
-    }
-    else if(maze[i][j] == 12){
-        SDL_RenderCopy(simulationRenderer, two, NULL, &fillRect);
-    }
-    else if(maze[i][j] == 13){
-        SDL_RenderCopy(simulationRenderer, three, NULL, &fillRect);
-    }
-    else if(maze[i][j] == 14){
-        SDL_RenderCopy(simulationRenderer, four, NULL, &fillRect);
-    }
-    else if(maze[i][j] == 15){
-        SDL_RenderCopy(simulationRenderer, five, NULL, &fillRect);
+    else if (maze[i][j]>10 && maze[i][j]<16){
+        SDL_RenderCopy(simulationRenderer, green[maze[i][j]-10], NULL, &fillRect);
     }
     else{
         SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
     }
     SDL_RenderPresent( simulationRenderer );	
+}
+
+void movePizza(vector<pair<int,int>> path){
+    reverse(path.begin(), path.end());
+    int n = path.size();
+    pair<int,int> curr;
+    pair<int,int> next;
+    for (int i=0; i<n;i++ ){
+        curr = path[i];
+        if (i+1<n) next = path[i+1];
+        else next = curr;
+        int angle = 0;
+        int dx=0, dy=0;
+        dx = next.first - curr.first;
+        dy = next.second - curr.second;
+        if (dx==0 && dy<0) angle = 90;
+        else if (dx ==0 && dy >0) angle = 270;
+        else if (dx>0 && dy==0) angle = 0;
+        else if (dx<0 && dy==0) angle = 180;
+        else angle =0;
+        SDL_Rect fillRect = { curr.second*cellWidth, curr.first*cellHeight, cellWidth, cellHeight };
+        SDL_RenderCopyEx(simulationRenderer, gPizzamanTexture, NULL, &fillRect, angle, NULL, SDL_FLIP_NONE);
+        SDL_RenderPresent( simulationRenderer );	
+        SDL_Delay(100);
+        SDL_RenderCopy(simulationRenderer, green[maze[curr.first][curr.second]-10], NULL, &fillRect);
+    }
+    SDL_Delay(3000);
 }
 
 
@@ -273,7 +282,7 @@ int dijakstra(){
     while(!delivery_points.empty()){
         SDL_RenderClear( simulationRenderer );
         updateScreen();  
-        SDL_RenderPresent( simulationRenderer );
+        // SDL_RenderPresent( simulationRenderer );
         priority_queue <pair<int, pair<int, int>>> q;
         int distance[n][m];
         pair<int,int> parent[n][m];
@@ -292,20 +301,20 @@ int dijakstra(){
         // Run the dijakstra's untill we find a find a location to visit
         while(!q.empty()){
             pair<int, int> a = q.top().second;
-            cout<< a.first << a.second << endl;
+            q.pop();
+            if (processed[a.first][a.second] == 1) continue;
+            processed[a.first][a.second] = 1;
 			SDL_Rect fillRect = { a.second*cellWidth, a.first*cellHeight, cellWidth, cellHeight };
-            SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
-
+            if (delivery_points.count(a)<=0) SDL_RenderCopy(simulationRenderer, orange[maze[a.first][a.second]-10] , NULL, &fillRect);
+            fillRect = { home.second*cellWidth, home.first*cellHeight, cellWidth, cellHeight };
+            SDL_RenderCopy(simulationRenderer, gPizzamanTexture , NULL, &fillRect);
             SDL_RenderPresent( simulationRenderer );	
             SDL_Delay(100);
             if (delivery_points.count(a)>0){
                 target  = a;
-                delivery_points.erase(a);
+                delivery_points.erase(target);
                 break;   // because we found atleast one point to visit, so we firstly run the simulation till there
             }
-            q.pop();
-            if (processed[a.first][a.second] == 1) continue;
-            processed[a.first][a.second] = 1;
             for (auto p: adj[a.first][a.second]){
                 pair<int,int> point = p.second;
                 int dist = p.first;
@@ -327,6 +336,7 @@ int dijakstra(){
             createPath(curr.first, curr.second);
             SDL_Delay(100);
         }
+        movePizza(path);
         home = target;	
         target = pair<int,int>();
 

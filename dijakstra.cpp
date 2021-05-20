@@ -69,6 +69,7 @@ int main(){
         pair <int,int> curr = target;
         while(curr!= home){
             path.push_back(parent[curr.first][curr.second]);
+            curr = parent[curr.first][curr.second];
         }
         home = target;
         target = pair<int,int>();

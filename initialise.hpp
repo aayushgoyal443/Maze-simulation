@@ -37,13 +37,11 @@ SDL_Renderer *simulationRenderer = NULL;
 
 SDL_Texture* gWallTexture = NULL;
 SDL_Texture* gGrassTexture = NULL;
-SDL_Texture* gDocmanTexture = NULL;
-SDL_Texture* one = NULL;
-SDL_Texture* two = NULL;
-SDL_Texture* three = NULL;
-SDL_Texture* four = NULL;
-SDL_Texture* five = NULL;
-
+SDL_Texture* gPizzamanTexture = NULL;
+SDL_Texture* white[6];
+SDL_Texture* red[6];
+SDL_Texture* green[6];
+SDL_Texture* orange[6];
 
 pair<int,int> check_position(int x, int y)
 {
@@ -108,32 +106,47 @@ bool loadMedia()
 {
     bool success = true;
 
-    gDocmanTexture = loadTexture("Resources/docman.png");
-    if (gDocmanTexture == NULL)
+    gPizzamanTexture = loadTexture("Resources/pizzaman.png");
+    if (gPizzamanTexture == NULL)
     {
         printf("Failed to load Docman image!\n");
         success = false;
     }
 
     gWallTexture = loadTexture("Resources/wall.png");
-    if (gDocmanTexture == NULL)
+    if (gWallTexture == NULL)
     {
         printf("Failed to load Docman image!\n");
         success = false;
     }
 
     gGrassTexture = loadTexture("Resources/grass.png");
-    if (gDocmanTexture == NULL)
+    if (gGrassTexture == NULL)
     {
         printf("Failed to load Docman image!\n");
         success = false;
     }
 
-    one  = loadTexture("Resources/1.png");
-    two = loadTexture("Resources/2.png");
-    three = loadTexture("Resources/3.png");
-    four = loadTexture("Resources/4.png");
-    five = loadTexture("Resources/5.png");
+    white[1]  = loadTexture("Resources/1_white.png");
+    white[2] = loadTexture("Resources/2_white.png");
+    white[3] = loadTexture("Resources/3_white.png");
+    white[4] = loadTexture("Resources/4_white.png");
+    white[5] = loadTexture("Resources/5_white.png");
+    red[1] = loadTexture("Resources/1_red.png");
+    red[2] = loadTexture("Resources/2_red.png");
+    red[3] = loadTexture("Resources/3_red.png");
+    red[4] = loadTexture("Resources/4_red.png");
+    red[5] = loadTexture("Resources/5_red.png");
+    green[1] = loadTexture("Resources/1_green.png");
+    green[2] = loadTexture("Resources/2_green.png");
+    green[3] = loadTexture("Resources/3_green.png");
+    green[4] = loadTexture("Resources/4_green.png");
+    green[5] = loadTexture("Resources/5_green.png");
+    orange[1] = loadTexture("Resources/1_orange.png");
+    orange[2] = loadTexture("Resources/2_orange.png");
+    orange[3] = loadTexture("Resources/3_orange.png");
+    orange[4] = loadTexture("Resources/4_orange.png");
+    orange[5] = loadTexture("Resources/5_orange.png");
     return success;
 }
 
@@ -143,8 +156,8 @@ void close()
     //Free loaded image
     SDL_DestroyTexture( gWallTexture );
 	gWallTexture = NULL;
-	SDL_DestroyTexture( gDocmanTexture );
-	gDocmanTexture = NULL;
+	SDL_DestroyTexture( gPizzamanTexture );
+	gPizzamanTexture = NULL;
 	SDL_DestroyTexture( gGrassTexture );
 	gGrassTexture = NULL;
 

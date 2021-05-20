@@ -22,20 +22,8 @@ void updateScreen(){
 			if(maze[i][j]==1){
 				SDL_RenderCopy(simulationRenderer, gWallTexture, NULL, &fillRect);
 			}
-            else if(maze[i][j] == 11){
-                SDL_RenderCopy(simulationRenderer, one, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 12){
-                SDL_RenderCopy(simulationRenderer, two, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 13){
-                SDL_RenderCopy(simulationRenderer, three, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 14){
-                SDL_RenderCopy(simulationRenderer, four, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 15){
-                SDL_RenderCopy(simulationRenderer, five, NULL, &fillRect);
+            else if (maze[i][j]>10 && maze[i][j]<16){
+                SDL_RenderCopy(simulationRenderer, white[maze[i][j]-10], NULL, &fillRect);
             }
             else{
                 SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
@@ -109,6 +97,7 @@ int dijakstra(){
         pair <int,int> curr = target;
         while(curr!= home){
             path.push_back(parent[curr.first][curr.second]);
+            curr = parent[curr.first][curr.second];
         }
         SDL_RenderClear( simulationRenderer );
         updateScreen();  
