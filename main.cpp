@@ -3,44 +3,15 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include "maze.hpp"
-#include "initialise.hpp"
 using namespace std;
 
 
-void updateScreen(){
-	SDL_SetRenderDrawColor( simulationRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	for(int i=0;i<height;i++){
-		for(int j=0;j<width;j++){
-			SDL_Rect fillRect = { j*cellWidth, i*cellHeight, cellWidth, cellHeight };
-			if(maze[i][j]==1){
-				SDL_RenderCopy(simulationRenderer, gWallTexture, NULL, &fillRect);
-			}
-            else if(maze[i][j] == 11){
-                SDL_RenderCopy(simulationRenderer, one, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 12){
-                SDL_RenderCopy(simulationRenderer, two, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 13){
-                SDL_RenderCopy(simulationRenderer, three, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 14){
-                SDL_RenderCopy(simulationRenderer, four, NULL, &fillRect);
-            }
-            else if(maze[i][j] == 15){
-                SDL_RenderCopy(simulationRenderer, five, NULL, &fillRect);
-            }
-            else{
-                SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
-            }
-		}
-	}
-}
+
 
 
 int main(int argc, char *args[])
 {
-    int no_of_delivery_points;
+    
     cout << "No. of Delivery Points: " << endl;
     cin >> no_of_delivery_points; 
     const int FPS = 40;
@@ -72,7 +43,7 @@ int main(int argc, char *args[])
 
     
     
-    vector<pair<int, int>> delivery_points;
+    
     formMaze();
     //While application is running
     while (!quit)
@@ -94,8 +65,8 @@ int main(int argc, char *args[])
                     int x, y;
                     SDL_GetMouseState(&x, &y);
                     pair<int, int> pos = check_position(x, y);
-                    if(maze[pos.first][pos.second] == 0){
-                        delivery_points.push_back(pos);
+                    if(maze[pos.first][pos.second] != 1){
+                        delivery_points.insert(pos);
                         cout << pos.first<< " " << pos.second << endl;
                     }
                 }
@@ -109,8 +80,7 @@ int main(int argc, char *args[])
             SDL_RenderPresent(simulationRenderer);
             if (delivery_points.size() == no_of_delivery_points) simulationRunning = true;
         }
-        
-        // While running in Single player
+        bool flag = false;
         while(simulationRunning){
             
             frameStart = SDL_GetTicks();
@@ -124,15 +94,19 @@ int main(int argc, char *args[])
                     quit = true;
                 }
             }
-
-            SDL_SetRenderDrawColor( simulationRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-            SDL_RenderClear( simulationRenderer );
-            updateScreen();  
-            SDL_RenderPresent( simulationRenderer );	
-            frameTime = SDL_GetTicks()-frameStart;
-            if(delay>frameTime){
-                SDL_Delay(delay - frameTime);
+            if (flag == false) {
+                dijakstra();
+                flag = true;
             }
+
+            // SDL_SetRenderDrawColor( simulationRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+            // SDL_RenderClear( simulationRenderer );
+            // updateScreen();  
+            // SDL_RenderPresent( simulationRenderer );	
+            // frameTime = SDL_GetTicks()-frameStart;
+            // if(delay>frameTime){
+            //     SDL_Delay(delay - frameTime);
+            // }
         }
     }
 
