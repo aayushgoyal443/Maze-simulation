@@ -1,42 +1,18 @@
 #include <bits/stdc++.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include "maze.hpp"
-#include "initialise.hpp"
 using namespace std;
 
 #define INF 1000000000
 
 
-int no_of_delivery_points;
-set<pair<int, int>> delivery_points;
-pair <int, int> home = {1, 1};
-pair<int,int> target;
 
-void updateScreen(){
-	SDL_SetRenderDrawColor( simulationRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	for(int i=0;i<height;i++){
-		for(int j=0;j<width;j++){
-			SDL_Rect fillRect = { j*cellWidth, i*cellHeight, cellWidth, cellHeight };
-			if(maze[i][j]==1){
-				SDL_RenderCopy(simulationRenderer, gWallTexture, NULL, &fillRect);
-			}
-            else if (maze[i][j]>10 && maze[i][j]<16){
-                SDL_RenderCopy(simulationRenderer, white[maze[i][j]-10], NULL, &fillRect);
-            }
-            else{
-                SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
-            }
-		}
-	}
-}
-
-
-int dijakstra(){
+int main(){
 
     // n is num rows, m is num cols
-    int n = height, m = width;
+    int n,m;
+    set <pair<int ,int>> delivery_points;
+    int maze[n][m];
+    pair <int, int> home;
+    pair<int,int> target;
 
     // Make adjacency list from the maze
     vector <pair<int, pair<int,int>>> adj[n][m];
@@ -66,13 +42,9 @@ int dijakstra(){
         q.push({0,{home.first, home.second}});
         parent[home.first][home.second] ={-1,-1};
 
-        // Run the dijakstra's untill we find a find a location to visit
+        // Run the dijkstra's untill we find a find a location to visit
         while(!q.empty()){
             pair<int, int> a = q.top().second;
-			SDL_Rect fillRect = { a.second*cellWidth, a.first*cellHeight, cellWidth, cellHeight };
-			SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
-            SDL_RenderPresent(simulationRenderer);
-            SDL_wait(500);
             if (delivery_points.count(a)>0){
                 target  = a;
                 delivery_points.erase(a);
@@ -99,9 +71,6 @@ int dijakstra(){
             path.push_back(parent[curr.first][curr.second]);
             curr = parent[curr.first][curr.second];
         }
-        SDL_RenderClear( simulationRenderer );
-        updateScreen();  
-        SDL_RenderPresent( simulationRenderer );	
         home = target;
         target = pair<int,int>();
 

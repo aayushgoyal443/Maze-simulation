@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
-#include "maze.hpp"
+#include "dijkstra.hpp"
 using namespace std;
 
 
@@ -114,7 +114,7 @@ int main(int argc, char *args[])
                 }
             }
             if (flag == false) {
-                if(dijakstra() < 0){
+                if(dijkstra() < 0){
                     simulationRunning = false;
                     quit = true;
                 }
