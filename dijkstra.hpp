@@ -53,6 +53,8 @@ void createPath(int i, int j){
     else{
         SDL_RenderCopy(simulationRenderer, gGrassTexture, NULL, &fillRect);
     }
+    fillRect = { home.second*cellWidth, home.first*cellHeight, cellWidth, cellHeight };
+    SDL_RenderCopy(simulationRenderer, gPizzamanTexture, NULL, &fillRect);
     SDL_RenderPresent( simulationRenderer );	
 }
 
@@ -89,7 +91,7 @@ int movePizza(vector<pair<int,int>> path){
         SDL_Delay(100);
         SDL_RenderCopy(simulationRenderer, green[maze[curr.first][curr.second]-10], NULL, &fillRect);
     }
-    SDL_Delay(3000);
+    SDL_Delay(2000);
     return 1;
 }
 
@@ -185,6 +187,7 @@ int dijkstra(){
             createPath(curr.first, curr.second);
             SDL_Delay(100);
         }
+        SDL_Delay(1000);
         if(movePizza(path) < 0){ return -1; }
         home = target;	
         target = pair<int,int>();

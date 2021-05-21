@@ -84,7 +84,7 @@ int main(int argc, char *args[])
                     int x, y;
                     SDL_GetMouseState(&x, &y);
                     pair<int, int> pos = check_position(x, y);
-                    if(maze[pos.first][pos.second] != 1){
+                    if(maze[pos.first][pos.second] != 1 && (pos!= make_pair(1,1))){
                         delivery_points.insert(pos);
                         cout << pos.first<< " " << pos.second << endl;
                     }
