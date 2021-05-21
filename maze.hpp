@@ -28,6 +28,7 @@ vector <vector<int>> visit;
 vector<int> traffic = {11,12,13,14,15};
 int nr=0,nc=0;
 
+// function to find an unvisited random neighbour
 bool rand_unvisited_neighbour(int r,int c){
     vector<pair<int,int>> unvisited;
     if(r+2<height && maze[r+2][c]==0 && visit[r+2][c]==0)unvisited.push_back({r+2,c});
@@ -44,7 +45,7 @@ bool rand_unvisited_neighbour(int r,int c){
 }
 
 
-
+// function to initialise the maze
 void initMaze(){
     for(int i = 0 ; i < height ; i += 2){
         for(int j=0;j<width ; j++){
@@ -62,7 +63,7 @@ void initMaze(){
 }
 
 
-
+// function to break a random wall
 void break_rand_wall(int r,int c){
     vector<pair<int,int>> visited;
     visited.push_back({-1, -1});
@@ -83,7 +84,7 @@ void break_rand_wall(int r,int c){
 }
 
 
-
+// run dfs to build the maze
 void dfsMaze(int r, int c){
     visit[r][c]=1;
     int flag = 0;
@@ -101,7 +102,7 @@ void dfsMaze(int r, int c){
 }
 
 
-
+// check for junctions in the maze
 bool junction(int i,int j){
     // cout<<i<<" "<<j<<endl;
     if(maze[i][j-1]==1 && maze[i][j+1]==1 && maze[i-1][j]==0 && maze[i+1][j]==0)return false;
@@ -109,7 +110,7 @@ bool junction(int i,int j){
     return true;
 }
 
-
+// function to break some more walls
 void breakSomeWalls(){
     // cout<<"yes";
     for(int i=1;i<height-1;i++){
@@ -161,6 +162,8 @@ void clearMaze(){
     }
 }
 
+
+// give random traffic value to different cells
 void getTraffic(){
     for(int i = 0;i<height; i++){
         for(int j = 0; j<width; j++){
@@ -172,6 +175,8 @@ void getTraffic(){
     }
 }
 
+
+// main function to build a maze
 void formMaze(){
     maze = vector <vector<int>>(height, vector<int>(width, 0));
     visit = vector <vector<int>>(height, vector<int>(width, 0));

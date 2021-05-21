@@ -120,15 +120,6 @@ int main(int argc, char *args[])
                 }
                 flag = true;
             }
-
-            // SDL_SetRenderDrawColor( simulationRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-            // SDL_RenderClear( simulationRenderer );
-            // updateScreen();  
-            // SDL_RenderPresent( simulationRenderer );	
-            // frameTime = SDL_GetTicks()-frameStart;
-            // if(delay>frameTime){
-            //     SDL_Delay(delay - frameTime);
-            // }
         }
     }
 
