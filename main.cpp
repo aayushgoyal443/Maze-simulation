@@ -11,7 +11,26 @@ using namespace std;
 
 int main(int argc, char *args[])
 {
-    
+    if (argc >1){
+        if (argc >=2){
+            int x  = stoi(args[1]);
+            if (x%2==0){
+                cout <<"Height and width must be of odd length.\n";
+                return 0;
+            }
+            height = width = x;
+        }
+        if (argc >=3){
+            int x = stoi(args[2]);
+            cellWidth = cellHeight = x;
+        }
+        if (argc >3){
+            cout <<"Incorrect number of arguments, pass ./simulation <height> <cellWidth>\n";
+            return 0;
+        }
+        SCREEN_WIDTH = width*cellWidth;
+        SCREEN_HEIGHT = height*cellHeight;
+    }
     cout << "No. of Delivery Points: " << endl;
     cin >> no_of_delivery_points; 
     const int FPS = 40;

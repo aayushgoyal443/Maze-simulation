@@ -9,10 +9,10 @@
 using namespace std;
 
 
-const int SCREEN_WIDTH = 816;  //696
-const int SCREEN_HEIGHT = 816;
-const int cellHeight =16;
-const int cellWidth = 16;
+int SCREEN_WIDTH = 816;  //696
+int SCREEN_HEIGHT = 816;
+int cellHeight =16;
+int cellWidth = 16;
 
 
 //Starts up SDL and creates window

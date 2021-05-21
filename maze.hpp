@@ -18,12 +18,12 @@
 
 using namespace std;
 
-const int height = 51;
-const int width = 51;
+int height = 51;
+int width = 51;
 
 
-int maze[height][width]={};  //1 for wall
-int visit[height][width]={};
+vector <vector<int>> maze;  //1 for wall
+vector <vector<int>> visit;
 
 vector<int> traffic = {11,12,13,14,15};
 int nr=0,nc=0;
@@ -173,7 +173,8 @@ void getTraffic(){
 }
 
 void formMaze(){
-
+    maze = vector <vector<int>>(height, vector<int>(width, 0));
+    visit = vector <vector<int>>(height, vector<int>(width, 0));
     srand(time(0));
     clearMaze();
     initMaze();
