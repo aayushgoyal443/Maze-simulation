@@ -9,8 +9,8 @@
 using namespace std;
 
 
-const int SCREEN_WIDTH = 1440;  //696
-const int SCREEN_HEIGHT = 1440;
+const int SCREEN_WIDTH = 816;  //696
+const int SCREEN_HEIGHT = 816;
 const int cellHeight =16;
 const int cellWidth = 16;
 

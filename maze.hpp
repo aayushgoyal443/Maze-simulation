@@ -233,12 +233,21 @@ void createPath(int i, int j){
     SDL_RenderPresent( simulationRenderer );	
 }
 
-void movePizza(vector<pair<int,int>> path){
+int movePizza(vector<pair<int,int>> path){
+    SDL_Event e;
     reverse(path.begin(), path.end());
     int n = path.size();
     pair<int,int> curr;
     pair<int,int> next;
     for (int i=0; i<n;i++ ){
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                return -1;
+            }
+        }
         curr = path[i];
         if (i+1<n) next = path[i+1];
         else next = curr;
@@ -258,11 +267,12 @@ void movePizza(vector<pair<int,int>> path){
         SDL_RenderCopy(simulationRenderer, green[maze[curr.first][curr.second]-10], NULL, &fillRect);
     }
     SDL_Delay(3000);
+    return 1;
 }
 
 
 int dijakstra(){
-
+    SDL_Event e;
     // n is num rows, m is num cols
     int n = height, m = width;
 
@@ -300,6 +310,14 @@ int dijakstra(){
 
         // Run the dijakstra's untill we find a find a location to visit
         while(!q.empty()){
+            while( SDL_PollEvent( &e ) != 0 )
+            {
+                //User requests quit
+                if( e.type == SDL_QUIT )
+                {
+                    return -1;
+                }
+            }
             pair<int, int> a = q.top().second;
             q.pop();
             if (processed[a.first][a.second] == 1) continue;
@@ -331,14 +349,23 @@ int dijakstra(){
         pair <int,int> curr = target;
 
         while(curr!= home){
+            while( SDL_PollEvent( &e ) != 0 )
+            {
+                //User requests quit
+                if( e.type == SDL_QUIT )
+                {
+                    return -1;
+                }
+            }
             path.push_back(parent[curr.first][curr.second]);
             curr = parent[curr.first][curr.second];
             createPath(curr.first, curr.second);
             SDL_Delay(100);
         }
-        movePizza(path);
+        if(movePizza(path) < 0){ return -1; }
         home = target;	
         target = pair<int,int>();
 
     }
+    return 1;
 }

@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
-#include "bot.hpp"
 #include "maze.hpp"
 using namespace std;
 
@@ -96,7 +95,10 @@ int main(int argc, char *args[])
                 }
             }
             if (flag == false) {
-                dijakstra();
+                if(dijakstra() < 0){
+                    simulationRunning = false;
+                    quit = true;
+                }
                 flag = true;
             }
 
