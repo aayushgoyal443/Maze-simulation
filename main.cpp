@@ -14,8 +14,8 @@ int main(int argc, char *args[])
     if (argc >1){
         if (argc >=2){
             int x  = stoi(args[1]);
-            if (x%2==0){
-                cout <<"Height and width must be of odd length.\n";
+            if (x <3){
+                cout <<"Invalid number of row/columns\n";
                 return 0;
             }
             height = width = x;
@@ -31,8 +31,22 @@ int main(int argc, char *args[])
         SCREEN_WIDTH = width*cellWidth;
         SCREEN_HEIGHT = height*cellHeight;
     }
-    cout << "No. of Delivery Points: " << endl;
+    formMaze();
+    if (numNodes<=0){
+        cout <<"No delivery location in the city\n";
+        return 0;
+    }
+    cout << "Enter the no. of Delivery Points: ";
     cin >> no_of_delivery_points; 
+    while( no_of_delivery_points > numNodes || no_of_delivery_points<=0){
+        if (no_of_delivery_points > numNodes) cout <<"Not enough areas in the city\n";
+        else cout <<"There must be atleast one location\n";
+        cout << "Enter the no. of Delivery Points: ";
+        cin >> no_of_delivery_points; 
+    }
+    cout <<"Click on the locations where you want to deliver Pizza\n";
+    cout <<"The Delivery locations are:\n";
+
     const int FPS = 40;
     const int delay = 1000/FPS;
     
@@ -60,10 +74,6 @@ int main(int argc, char *args[])
 
     bool simulationRunning = false;
 
-    
-    
-    
-    formMaze();
     //While application is running
     while (!quit)
     {

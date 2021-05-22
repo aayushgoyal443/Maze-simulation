@@ -28,6 +28,8 @@ vector <vector<int>> visit;
 vector<int> traffic = {11,12,13,14,15};
 int nr=0,nc=0;
 
+int numNodes=0;
+
 // function to find an unvisited random neighbour
 bool rand_unvisited_neighbour(int r,int c){
     vector<pair<int,int>> unvisited;
@@ -175,6 +177,27 @@ void getTraffic(){
     }
 }
 
+// Function to build boundary of maze, this is needed in case of even length
+void buildBoundary(){
+    for (int i=0; i<width; i++){
+        maze[height-1][i]=1;
+        maze[0][i]=1;
+    }
+    for (int i=0;i<height;i++){
+        maze[i][width-1] =1;
+        maze[i][0]=1;
+    }
+}
+
+void countNodes(){
+    numNodes=0;
+    for (int i=0;i<height ;i++){
+        for (int j=0;j<width;j++){
+            if (maze[i][j] >10 && maze[i][j]<16) numNodes++;
+        }
+    }
+    if (height>1 && width>1 && maze[1][1]>10 && maze[1][1]<16) numNodes--; // because home is also not a valid location
+}
 
 // main function to build a maze
 void formMaze(){
@@ -186,5 +209,6 @@ void formMaze(){
     dfsMaze(1,1);
     breakSomeWalls();
     getTraffic();
-
+    buildBoundary();
+    countNodes();
 }
