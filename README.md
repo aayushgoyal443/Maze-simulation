@@ -23,3 +23,6 @@ This will produce a maze with <num_rows> number of Rows and <num_rows> number of
 7. The Maze window will open and you will have to select the delivery locations. Click using mouse on the desired points.  
 Walls are not valid delivery location. The delivery location will be marked in Red as soon as you click it.
 8. Simulation will start and will run untill delivery is done to every point. Once the simulation is done, you can close the window. You can close the windoww in between also.
+
+## An Example Simulation:
+<img src="./Resources/maze-simulation.gif" align="center"></img>
